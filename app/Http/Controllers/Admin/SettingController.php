@@ -11,53 +11,59 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\View\View;
+use Spatie\Permission\Middleware\PermissionMiddleware;
 
 class SettingController extends Controller implements HasMiddleware
 {
     use FileUploadTrait;
+
     public static function middleware(): array
     {
         return [
-            // examples with aliases, pipe-separated names, guards, etc:
-            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('setting index,admin'), only:['index']),
-            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('setting update,admin'), only:['updateGeneralSetting', 'updateSeoSetting', 'updateAppearanceSetting']),
+            new Middleware(
+                PermissionMiddleware::using('setting index,admin'),
+                only: [
+                    'index',
+                    'crudIndex',
+                    'crudCreate',
+                    'crudEdit',
+                ]
+            ),
 
-
-
+            new Middleware(
+                PermissionMiddleware::using('setting update,admin'),
+                only: [
+                    'updateGeneralSetting',
+                    'updateSeoSetting',
+                    'updateAppearanceSetting',
+                    'updateMicrosoftApiSetting',
+                    'crudStore',
+                    'crudUpdate',
+                    'crudDestroy',
+                ]
+            ),
         ];
     }
 
-
-
-    public function index()
+    public function index(): View
     {
-
         return view('admin.setting.index');
     }
 
-
-    function updateGeneralSetting(AdminGeneralSettingUpdateRequest $request) : RedirectResponse {
-
+    public function updateGeneralSetting(AdminGeneralSettingUpdateRequest $request): RedirectResponse
+    {
         $logoPath = $this->handleFileUpload($request, 'site_logo');
         $faviconPath = $this->handleFileUpload($request, 'site_favicon');
 
-        Setting::updateOrCreate(
-            ['key' => 'site_name'],
-            ['value' => $request->site_name]
-        );
+        $this->updateSetting('site_name', $request->site_name);
 
-        if(!empty($logoPath)){
-            Setting::updateOrCreate(
-                ['key' => 'site_logo'],
-                ['value' => $logoPath]
-            );
+        if (!empty($logoPath)) {
+            $this->updateSetting('site_logo', $logoPath);
         }
 
-        if(!empty($faviconPath)){
-            Setting::updateOrCreate(
-                ['key' => 'site_favicon'],
-                ['value' => $faviconPath]
-            );
+        if (!empty($faviconPath)) {
+            $this->updateSetting('site_favicon', $faviconPath);
         }
 
         toast(__('admin.Updated Successfully!'), 'success');
@@ -65,66 +71,117 @@ class SettingController extends Controller implements HasMiddleware
         return redirect()->back();
     }
 
-
-    function updateSeoSetting(AdminSeoSettingUpdateRequest $request) : RedirectResponse {
-        Setting::updateOrCreate(
-            ['key' => 'site_seo_title'],
-            ['value' => $request->site_seo_title]
-        );
-
-
-        Setting::updateOrCreate(
-            ['key' => 'site_seo_description'],
-            ['value' => $request->site_seo_description]
-        );
-
-
-        Setting::updateOrCreate(
-            ['key' => 'site_seo_keywords'],
-            ['value' => $request->site_seo_keywords]
-        );
-
+    public function updateSeoSetting(AdminSeoSettingUpdateRequest $request): RedirectResponse
+    {
+        $this->updateSetting('site_seo_title', $request->site_seo_title);
+        $this->updateSetting('site_seo_description', $request->site_seo_description);
+        $this->updateSetting('site_seo_keywords', $request->site_seo_keywords);
 
         toast(__('admin.Updated Successfully!'), 'success');
 
         return redirect()->back();
     }
 
-    function updateAppearanceSetting(Request $request): RedirectResponse {
+    public function updateAppearanceSetting(Request $request): RedirectResponse
+    {
         $request->validate([
-            'site_color' => ['required', 'max:200']
+            'site_color' => ['required', 'max:200'],
         ]);
 
-        Setting::updateOrCreate(
-            ['key' => 'site_color'],
-            ['value' => $request->site_color]
-        );
+        $this->updateSetting('site_color', $request->site_color);
 
         toast(__('admin.Updated Successfully!'), 'success');
 
         return redirect()->back();
     }
 
-    function updateMicrosoftApiSetting(Request $request) : RedirectResponse {
-
+    public function updateMicrosoftApiSetting(Request $request): RedirectResponse
+    {
         $request->validate([
             'site_microsoft_api_host' => ['required'],
             'site_microsoft_api_key' => ['required'],
         ]);
 
-        Setting::updateOrCreate(
-            ['key' => 'site_microsoft_api_host'],
-            ['value' => $request->site_microsoft_api_host]
-        );
-
-        Setting::updateOrCreate(
-            ['key' => 'site_microsoft_api_key'],
-            ['value' => $request->site_microsoft_api_key]
-        );
+        $this->updateSetting('site_microsoft_api_host', $request->site_microsoft_api_host);
+        $this->updateSetting('site_microsoft_api_key', $request->site_microsoft_api_key);
 
         toast(__('admin.Updated Successfully!'), 'success');
 
         return redirect()->back();
     }
 
+    /**
+     * CRUD Settings
+     */
+    public function crudIndex(): View
+    {
+        $settings = Setting::query()
+            ->orderByDesc('id')
+            ->paginate(10);
+
+        return view('admin.setting.crud-index', compact('settings'));
+    }
+
+    public function crudCreate(): View
+    {
+        return view('admin.setting.crud-create');
+    }
+
+    public function crudStore(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'key' => ['required', 'string', 'max:255', 'unique:settings,key'],
+            'value' => ['nullable', 'string'],
+        ]);
+
+        Setting::create($validated);
+
+        toast('Setting berhasil ditambahkan!', 'success');
+
+        return redirect()->route('admin.settings-crud.index');
+    }
+
+    public function crudEdit(int|string $id): View
+    {
+        $setting = Setting::findOrFail($id);
+
+        return view('admin.setting.crud-edit', compact('setting'));
+    }
+
+    public function crudUpdate(Request $request, int|string $id): RedirectResponse
+    {
+        $setting = Setting::findOrFail($id);
+
+        $validated = $request->validate([
+            'key' => ['required', 'string', 'max:255', 'unique:settings,key,' . $setting->id],
+            'value' => ['nullable', 'string'],
+        ]);
+
+        $setting->update($validated);
+
+        toast('Setting berhasil diperbarui!', 'success');
+
+        return redirect()->route('admin.settings-crud.index');
+    }
+
+    public function crudDestroy(int|string $id): RedirectResponse
+    {
+        $setting = Setting::findOrFail($id);
+        $setting->delete();
+
+        toast('Setting berhasil dihapus!', 'success');
+
+        return redirect()->route('admin.settings-crud.index');
+    }
+
+    /**
+     * Helper untuk update setting berdasarkan key.
+     */
+    private function updateSetting(string $key, mixed $value): void
+    {
+        Setting::updateOrCreate(
+            ['key' => $key],
+            ['value' => $value]
+        );
+    }
 }

@@ -128,5 +128,16 @@ Route::group(['prefix'=>'admin','as'=>'admin.','middleware'=>[App\Http\Middlewar
 
 
     Route::post('translate-string', [LocalizationController::class, 'translateString'])->name('translate-string');
+
+
+
+/** Settings CRUD Routes */
+Route::get('settings-crud', [SettingController::class, 'crudIndex'])->name('settings-crud.index');
+Route::get('settings-crud/create', [SettingController::class, 'crudCreate'])->name('settings-crud.create');
+Route::post('settings-crud', [SettingController::class, 'crudStore'])->name('settings-crud.store');
+Route::get('settings-crud/{id}/edit', [SettingController::class, 'crudEdit'])->name('settings-crud.edit');
+Route::put('settings-crud/{id}', [SettingController::class, 'crudUpdate'])->name('settings-crud.update');
+Route::delete('settings-crud/{id}', [SettingController::class, 'crudDestroy'])->name('settings-crud.destroy');
+
 });
 
