@@ -113,14 +113,14 @@ class SettingController extends Controller implements HasMiddleware
     /**
      * CRUD Settings
      */
-    public function crudIndex(): View
-    {
-        $settings = Setting::query()
-            ->orderByDesc('id')
-            ->paginate(10);
+public function crudIndex(): View
+{
+    $settingItems = Setting::query()
+        ->orderByDesc('id')
+        ->paginate(10);
 
-        return view('admin.setting.crud-index', compact('settings'));
-    }
+    return view('admin.setting.crud-index', compact('settingItems'));
+}
 
     public function crudCreate(): View
     {

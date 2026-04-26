@@ -141,7 +141,50 @@
                 </li>
             @endif
 
+                        @if (canAccess(['access management index']))
+                <li class="dropdown
+                {{ setSidebarActive([
+                    'admin.role.*',
+                    'admin.role-users.*'
+                    ]) }}
+            ">
+                    <a href="#" class="nav-link has-dropdown"><i class="fas fa-user-shield"></i>
+                        <span>{{ __('admin.Access Management') }}</span></a>
+                    <ul class="dropdown-menu">
+
+                        <li class="{{ setSidebarActive(['admin.role-users.*']) }}"><a class="nav-link"
+                                                                                      href="{{ route('admin.role-users.index') }}">{{ __('admin.Role Users') }}</a></li>
+
+                        <li class="{{ setSidebarActive(['admin.role.*']) }}"><a class="nav-link"
+                                                                                href="{{ route('admin.role.index') }}">{{ __('admin.Roles and Permissions') }}</a></li>
+                    </ul>
+                </li>
+            @endif
+
             @if (canAccess(['setting index']))
+                <li class="dropdown {{ setSidebarActive(['admin.setting.*', 'admin.settings-crud.*']) }}">
+                    <a href="#" class="nav-link has-dropdown">
+                        <i class="fas fa-cogs"></i>
+                        <span>{{ __('admin.Settings') }}</span>
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        <li class="{{ setSidebarActive(['admin.setting.index']) }}">
+                            <a class="nav-link" href="{{ route('admin.setting.index') }}">
+                                {{ __('admin.General Settings') }}
+                            </a>
+                        </li>
+
+                        <li class="{{ setSidebarActive(['admin.settings-crud.*']) }}">
+                            <a class="nav-link" href="{{ route('admin.settings-crud.index') }}">
+                                CRUD Settings
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
+
+            @if (canAccess(['languages index']))
 
             @endif
 
