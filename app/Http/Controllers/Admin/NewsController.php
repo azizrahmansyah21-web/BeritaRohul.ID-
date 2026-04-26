@@ -50,6 +50,29 @@ class NewsController extends Controller implements HasMiddleware
         return view('admin.pending-news.index', compact('languages'));
     }
 
+    // added for summernote image upload
+    public function uploadImage(\Illuminate\Http\Request $request)
+    {
+        // Tambahkan ->isValid() untuk memastikan file fisiknya benar-benar ada dan tidak corrupt
+        if ($request->hasFile('file') && $request->file('file')->isValid()) {
+            try {
+                $file = $request->file('file');
+                $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                
+                $file->move(public_path('uploads/news'), $filename);
+                
+                return response()->json([
+                    'url' => asset('uploads/news/' . $filename)
+                ]);
+            } catch (\Exception $e) {
+                // Jika gagal saat dipindah, kita tangkap errornya agar tidak muncul halaman 500
+                return response()->json(['error' => 'Gagal memindahkan file: ' . $e->getMessage()], 500);
+            }
+        }
+    
+        // Jika file hilang, corrupt, atau tidak terbaca
+        return response()->json(['error' => 'File tidak ditemukan atau terkorupsi saat diunggah.'], 400);
+    }
 
     /**
      * Fetch category depending on language
