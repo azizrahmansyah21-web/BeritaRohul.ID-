@@ -60,7 +60,7 @@
 
                     <div class="form-group">
                         <label for="">{{ __('admin.Content') }}</label>
-                        <textarea name="content1" class="summernote-simple"></textarea>
+                        <textarea name="content1" id="berita-editor" class="summernote"></textarea>
                         @error('content1')
                             <p class="text-danger">{{ $message }}</p>
                         @enderror
@@ -149,6 +149,58 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
+
+            // 1. Trik Ninja: Hancurkan dulu editor bawaan template Stisla
+            if ($('.summernote').length) {
+                $('.summernote').summernote('destroy');
+            }
+
+            // 2. Bangun ulang editornya dengan aturan AJAX dan Toolbar lengkap milik kita
+            $('.summernote').summernote({
+                height: 400,
+                dialogsInBody: true,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'italic', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video']], // Tombol media
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ],
+                callbacks: {
+                    onImageUpload: function(files) {
+                        console.log("Mencoba upload gambar via AJAX...");
+                        uploadImage(files[0]);
+                    }
+                }
+            });
+
+            // 3. Fungsi Upload-nya tetap sama
+            function uploadImage(file) {
+                let data = new FormData();
+                data.append("file", file);
+                data.append("_token", "{{ csrf_token() }}");
+
+                $.ajax({
+                    url: "{{ route('admin.news.upload_image') }}",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    type: "POST",
+                    success: function(response) {
+                        $('.summernote').summernote('insertImage', response.url);
+                        console.log("Sukses! Gambar masuk dengan URL: " + response.url);
+                    },
+                    error: function(err) {
+                        console.error("Gagal Upload:", err);
+                        alert("Gagal mengunggah gambar. Cek F12 Console.");
+                    }
+                });
+            }
+
+            // Fetch categories based on language selection
             $('#language-select').on('change', function() {
                 let lang = $(this).val();
                 $.ajax({
@@ -168,6 +220,7 @@
                         })
 
                     },
+
                     error: function(error) {
                         console.log(error);
                     }

@@ -66,7 +66,7 @@
 
                     <div class="form-group">
                         <label for="">{{ __('admin.Content') }}</label>
-                        <textarea name="content1" class="summernote-simple">{{ $news->content }}</textarea>
+                        <textarea name="content1" class="summernote">{{ $news->content }}</textarea>
 
                         @error('content1')
                             <p class="text-danger">{{ $message }}</p>
@@ -158,12 +158,66 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
+            // Display existing image preview
             $('.image-preview').css({
                 "background-image": "url({{ asset($news->image) }})",
                 "background-size": "cover",
                 "background-position": "center center"
             });
 
+            // Inisialisasi Summernote dengan image upload
+            $('.summernote').summernote({
+                height: 400,
+                callbacks: {
+                    // Ketika user memasukkan gambar, jalankan fungsi uploadImage
+                    onImageUpload: function(files) {
+                        uploadImage(files[0]);
+                    }
+                }
+            });
+
+            // Fungsi AJAX untuk mengirim gambar ke server
+            function uploadImage(file) {
+                // Validasi file
+                const allowedFormats = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                const maxFileSize = 5 * 1024 * 1024; // 5MB
+
+                if (!allowedFormats.includes(file.type)) {
+                    alert("{{ __('admin.Only image files are allowed') }}");
+                    return;
+                }
+
+                if (file.size > maxFileSize) {
+                    alert("{{ __('admin.File size must not exceed 5MB') }}");
+                    return;
+                }
+
+                let data = new FormData();
+                data.append("file", file);
+                data.append("_token", "{{ csrf_token() }}");
+
+                $.ajax({
+                    url: "{{ route('admin.news.upload_image') }}",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    type: "POST",
+                    success: function(response) {
+                        if (response.url) {
+                            $('.summernote').summernote('insertImage', response.url);
+                        } else {
+                            alert("{{ __('admin.Error uploading image') }}");
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Upload error:', error);
+                        alert("{{ __('admin.Failed to upload image') }}");
+                    }
+                });
+            }
+
+            // Fetch categories based on language selection
             $('#language-select').on('change', function() {
                 let lang = $(this).val();
                 $.ajax({

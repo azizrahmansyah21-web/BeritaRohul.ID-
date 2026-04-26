@@ -90,7 +90,7 @@
                 </div>
                 <figure class="mb-0 mx-auto">
                     <a href="{{ url('/') }}">
-                        <img width="40" height="40" src="{{ asset($settings['site_logo']) }}" alt="" class="img-fluid logo">
+                        <img width="150" height="70" src="{{ asset($settings['site_logo']) }}" alt="" class="img-fluid logo">
                     </a>
                 </figure>
 

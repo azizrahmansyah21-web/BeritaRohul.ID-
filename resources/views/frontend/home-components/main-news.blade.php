@@ -36,8 +36,7 @@
                                                         </li>
                                                         <li class="list-inline-item">
                                                     <span>
-
-                                                        {{ date('M d, Y', strtotime($news->create_at)) }}
+                                                        {{ $news->created_at->format('M d, Y') }}
                                                     </span>
                                                         </li>
                                                     </ul>

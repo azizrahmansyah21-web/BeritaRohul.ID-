@@ -39,11 +39,11 @@
                                 ->orderBy('id', 'DESC')
                                 ->get();
                             }else {
-                               $news = \App\Models\News::with('category')
-                               ->where('language', $language->lang)
-                               ->where('is_approved', 1)
-                               ->where('auther_id', auth()->guard('admin')->user()->id)
-                               ->orderBy('id', 'DESC')
+                                $news = \App\Models\News::with('category')
+                                ->where('language', $language->lang)
+                                ->where('is_approved', 1)
+                                ->where('auther_id', auth()->guard('admin')->user()->id)
+                                ->orderBy('id', 'DESC')
                                 ->get();
                             }
                         @endphp
