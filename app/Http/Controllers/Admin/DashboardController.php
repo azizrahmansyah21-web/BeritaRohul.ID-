@@ -12,6 +12,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use App\Models\Admin;
 
 class DashboardController extends Controller
 {
@@ -26,6 +27,44 @@ class DashboardController extends Controller
         $socials = SocialLink::count();
         $subscribers = Subscriber::count();
 
-        return view('admin.dashboard.index', compact('publishedNews', 'pendingNews', 'Categories', 'languages', 'roles', 'permissions', 'socials', 'subscribers'));
+        $recentNews = News::with('category')->latest()->take(5)->get();
+        $topAuthors = Admin::withCount('news')
+            ->orderBy('news_count', 'desc')
+            ->take(5)
+            ->get();
+
+        $adSettings = \App\Models\Ad::first();
+        $activeAds = 0;
+        $inactiveAds = 0;
+
+        if ($adSettings) {
+            $statuses = [
+                $adSettings->home_top_bar_ad_status,
+                $adSettings->home_middle_ad_status,
+                $adSettings->view_page_ad_status,
+                $adSettings->news_page_ad_status,
+                $adSettings->side_bar_ad_status,
+            ];
+        
+            $activeAds = count(array_filter($statuses, function($status) {
+                return $status == 1;
+            }));
+
+            $inactiveAds = 5 - $activeAds;
+        }
+        return view('admin.dashboard.index', compact(
+            'publishedNews', 
+            'pendingNews', 
+            'Categories', 
+            'languages', 
+            'roles', 
+            'permissions', 
+            'socials', 
+            'subscribers',
+            'recentNews',
+            'topAuthors',
+            'activeAds',
+            'inactiveAds'
+        ));
     }
 }
