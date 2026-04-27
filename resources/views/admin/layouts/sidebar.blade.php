@@ -3,7 +3,7 @@
 @include('admin.layouts.navbar')
 <!-- Navbar End -->
 
-<div class="main-sidebar sidebar-style-2">
+<div id="sidebar" class="main-sidebar sidebar-style-2 bg-white w-64 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out z-50 shadow-lg">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
             <a href="index.html">{{ __('admin.Stisla') }}</a>

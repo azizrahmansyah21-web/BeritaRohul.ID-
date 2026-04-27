@@ -1,5 +1,11 @@
 <nav class="navbar navbar-expand-lg main-navbar">
 
+    <button id="mobile-menu-button" class="md:hidden p-2 text-gray-500 hover:text-gray-700 focus:outline-none">
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+    </button>
+
     <ul class="navbar-nav navbar-right ml-auto">
 
         <li class="dropdown"><a href="#" data-toggle="dropdown"

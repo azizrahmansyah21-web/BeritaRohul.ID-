@@ -89,6 +89,15 @@
 <script src="{{ asset('admin/assets/js/custom.js') }}"></script>
 
 <script>
+    // Ambil elemen tombol dan sidebar
+    const btn = document.getElementById('mobile-menu-button');
+    const sidebar = document.getElementById('sidebar');
+
+    // Berikan perintah klik pada tombol
+    btn.addEventListener('click', () => {
+        // Toggle (tambah/hapus) class '-translate-x-full'
+        sidebar.classList.toggle('-translate-x-full');
+    });
     $.uploadPreview({
         input_field: "#image-upload", // Default: .image-upload
         preview_box: "#image-preview", // Default: .image-preview
