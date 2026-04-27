@@ -1,8 +1,473 @@
-/**
- *
- * You can write your CSS code here, DO NOT touch the default JavaScript file
- * because it will make it harder for you to update.
- * 
- */
+/* =========================================================
+BeritaRohul.ID Admin Theme
+Apple-esque, Clean, Minimalist, Elegant Stisla Override
+File: public/admin/assets/css/custom.css
+========================================================= */
 
-/*# sourceMappingURL=custom.css.map */
+:root {
+/* Brand Colors - Tetap dipertahankan namun digunakan sebagai aksen /
+--brand-primary: #2b76ab;
+--brand-primary-dark: #1e5a85;
+--brand-secondary: #267538;
+--brand-warning: #f59e0b; / Disesuaikan sedikit agar lebih soft/amber */
+
+/* Typography - Apple Grays */
+--text-main: #1d1d1f; /* Warna teks utama Apple (bukan hitam pekat) */
+--text-muted: #86868b; /* Warna teks sekunder/label */
+
+/* Backgrounds - Apple Interface Colors */
+--bg-body: #f5f5f7; /* Khas iOS/macOS background */
+--bg-card: #ffffff;
+--bg-sidebar: #ffffff;
+
+/* Borders & Shadows - Clean & Subtle */
+--border-soft: #d2d2d7; /* Apple standard soft border */
+--border-light: rgba(0, 0, 0, 0.03);
+
+/* Apple style smooth shadows (high spread, low opacity) */
+--shadow-soft: 0 4px 24px rgba(0, 0, 0, 0.04);
+--shadow-hover: 0 10px 32px rgba(0, 0, 0, 0.08);
+
+/* Geometry - Apple squircle simulation */
+--radius-sm: 8px;
+--radius-md: 12px;
+--radius-lg: 16px;
+--radius-xl: 20px;
+}
+
+/* =========================================================
+Global & Typography
+========================================================= */
+
+body {
+background-color: var(--bg-body);
+color: var(--text-main);
+font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+font-size: 14px;
+-webkit-font-smoothing: antialiased; /* Membuat font lebih tajam ala Mac */
+letter-spacing: -0.015em;
+}
+
+a {
+color: var(--brand-primary);
+transition: color 0.2s ease;
+}
+
+a:hover {
+color: var(--brand-primary-dark);
+text-decoration: none;
+}
+
+/* =========================================================
+Navbar (Glassmorphism Effect ala macOS/iOS)
+========================================================= */
+
+/* Menghilangkan background gradient bawaan Stisla */
+.navbar-bg {
+background: transparent;
+height: 70px;
+z-index: -1;
+}
+
+.navbar {
+height: 70px;
+background-color: rgba(255, 255, 255, 0.85);
+backdrop-filter: blur(16px);
+-webkit-backdrop-filter: blur(16px);
+border-bottom: 1px solid var(--border-light);
+box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.main-navbar {
+box-shadow: none;
+}
+
+/* Menyesuaikan warna icon & teks navbar karena bg sudah putih */
+.navbar .nav-link {
+color: var(--text-main);
+border-radius: var(--radius-sm);
+font-weight: 500;
+}
+
+.navbar .nav-link:hover {
+background-color: rgba(0, 0, 0, 0.04);
+color: var(--brand-primary);
+}
+
+.navbar .nav-link-user {
+color: var(--text-main) !important;
+}
+
+.navbar .nav-link-user img {
+width: 34px;
+height: 34px;
+object-fit: cover;
+border-radius: 50%;
+border: 1px solid var(--border-soft);
+}
+
+.navbar .dropdown-menu {
+border: 1px solid var(--border-light);
+border-radius: var(--radius-md);
+box-shadow: var(--shadow-hover);
+padding: 8px;
+}
+
+.navbar .dropdown-item {
+border-radius: var(--radius-sm);
+padding: 10px 14px;
+font-size: 13.5px;
+font-weight: 500;
+transition: background-color 0.15s ease;
+}
+
+.navbar .dropdown-item:hover {
+background-color: rgba(0, 0, 0, 0.04);
+color: var(--text-main);
+}
+
+/* =========================================================
+Sidebar (Clean & Minimalist)
+========================================================= */
+
+.main-sidebar {
+background-color: var(--bg-sidebar);
+border-right: 1px solid var(--border-light);
+box-shadow: none; /* Hilangkan shadow tebal */
+}
+
+.main-sidebar .sidebar-brand {
+height: 70px;
+line-height: 70px;
+}
+
+.main-sidebar .sidebar-brand a {
+color: var(--text-main);
+font-weight: 700;
+font-size: 18px;
+letter-spacing: -0.5px;
+}
+
+.main-sidebar .sidebar-menu {
+padding: 10px 16px 30px;
+}
+
+.main-sidebar .sidebar-menu li.menu-header {
+margin: 20px 0 8px;
+padding: 0 10px;
+color: var(--text-muted);
+font-size: 11px;
+font-weight: 600;
+letter-spacing: 0.5px;
+text-transform: uppercase;
+}
+
+.main-sidebar .sidebar-menu li a {
+margin: 2px 0;
+padding: 0 12px;
+height: 40px;
+border-radius: var(--radius-sm);
+color: var(--text-main);
+font-weight: 500;
+transition: all 0.2s ease;
+}
+
+.main-sidebar .sidebar-menu li a i {
+width: 24px;
+margin-right: 8px;
+color: var(--text-muted);
+font-size: 16px;
+transition: color 0.2s ease;
+}
+
+.main-sidebar .sidebar-menu li a:hover {
+background-color: rgba(0, 0, 0, 0.03);
+}
+
+
+.main-sidebar .sidebar-menu li.active > a i,
+.main-sidebar .sidebar-menu li.dropdown.active > a i {
+color: var(--brand-primary);
+}
+
+.main-sidebar .sidebar-menu li ul.dropdown-menu {
+padding: 4px 0 4px 16px;
+background-color: transparent;
+}
+
+.main-sidebar .sidebar-menu li ul.dropdown-menu li a {
+height: 36px;
+padding-left: 32px;
+color: var(--text-muted);
+font-size: 13.5px;
+font-weight: 500;
+}
+
+.main-sidebar .sidebar-menu li ul.dropdown-menu li.active > a,
+.main-sidebar .sidebar-menu li ul.dropdown-menu li a:hover {
+color: var(--text-main);
+background-color: transparent;
+font-weight: 600;
+}
+
+/* =========================================================
+Main Content & Headers
+========================================================= */
+
+.main-content {
+padding-top: 100px;
+}
+
+.section .section-header {
+background-color: transparent; /* Hilangkan background putih /
+border: none;
+box-shadow: none; / Hilangkan shadow */
+padding: 0 0 20px 0;
+margin-bottom: 10px;
+}
+
+.section .section-header h1 {
+color: var(--text-main);
+font-size: 28px;
+font-weight: 700;
+letter-spacing: -0.8px;
+}
+
+/* Hilangkan garis tebal gradient sebelum judul H1 */
+.section .section-header h1::before {
+display: none;
+}
+
+/* =========================================================
+Cards (Struktur Konten)
+========================================================= */
+
+.card {
+border: 1px solid var(--border-light);
+border-radius: var(--radius-lg);
+background-color: var(--bg-card);
+box-shadow: var(--shadow-soft);
+transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+}
+
+/* Hover efek diminimalisir agar tidak "lebay" lompat-lompat */
+.card:hover {
+box-shadow: var(--shadow-hover);
+}
+
+.card .card-header {
+min-height: auto;
+border-bottom: 1px solid var(--border-light);
+background-color: transparent;
+padding: 20px 24px;
+}
+
+.card .card-header h4 {
+color: var(--text-main);
+font-size: 16px;
+font-weight: 600;
+letter-spacing: -0.2px;
+}
+
+.card .card-body {
+padding: 24px;
+}
+
+/* =========================================================
+Statistic Cards (Dashboard)
+========================================================= */
+
+.card.card-statistic-1 {
+min-height: auto;
+}
+
+/* Menghilangkan hover translateY yang berlebihan */
+.card.card-statistic-1:hover {
+transform: none;
+}
+
+/* Icon box diubah agar bisa mengikuti warna utility class/inline /
+.card.card-statistic-1 .card-icon {
+display: flex;
+align-items: center;
+justify-content: center;
+border-radius: var(--radius-md);
+margin: 20px 0 20px 20px;
+width: 48px;
+height: 48px;
+box-shadow: none !important; / Hilangkan shadow tebal icon /
+/ Background color dihapus agar menyesuaikan dengan utility class/inline tailwind */
+
+
+.card.card-statistic-1 .card-icon i {
+font-size: 20px;
+color: inherit; /* Mewarisi warna dari elemen parent agar sesuai */
+}
+
+.card.card-statistic-1 .card-wrap {
+margin-left: 84px;
+padding: 20px 20px 20px 0;
+}
+
+.card.card-statistic-1 .card-header h4 {
+color: var(--text-muted);
+font-size: 12px;
+font-weight: 500;
+text-transform: capitalize; /* Lebih elegan daripada UPPERCASE */
+letter-spacing: 0;
+}
+
+.card.card-statistic-1 .card-body {
+padding: 4px 0 0;
+color: var(--text-main);
+font-size: 28px;
+font-weight: 700;
+letter-spacing: -0.5px;
+}
+
+/* Utility classes untuk warna soft icon - siap dipakai di div .card-icon */
+.bg-primary { background-color: rgba(43, 118, 171, 0.1) !important; color: var(--brand-primary) !important; }
+.bg-success { background-color: rgba(38, 117, 56, 0.1) !important; color: var(--brand-secondary) !important; }
+.bg-warning { background-color: rgba(245, 158, 11, 0.1) !important; color: var(--brand-warning) !important; }
+.bg-secondary { background-color: rgba(134, 134, 139, 0.1) !important; color: var(--text-muted) !important; }
+
+/* =========================================================
+Buttons (Pill/Rounded shape ala macOS)
+========================================================= */
+
+.btn {
+border-radius: var(--radius-sm);
+font-weight: 600;
+padding: 8px 16px;
+font-size: 13.5px;
+letter-spacing: -0.1px;
+box-shadow: none !important; /* Flat design */
+transition: all 0.2s ease;
+}
+
+.btn-primary {
+background-color: var(--brand-primary);
+border-color: var(--brand-primary);
+color: #ffffff;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+background-color: var(--brand-primary-dark) !important;
+border-color: var(--brand-primary-dark) !important;
+transform: scale(0.98); /* Efek klik natural */
+}
+
+/* =========================================================
+Tables (Clean Data Display)
+========================================================= */
+
+.table {
+color: var(--text-main);
+}
+
+.table th {
+color: var(--text-muted);
+font-size: 12px;
+font-weight: 600;
+text-transform: capitalize;
+letter-spacing: 0;
+border-top: none;
+border-bottom: 1px solid var(--border-soft);
+padding-bottom: 12px;
+}
+
+.table td {
+vertical-align: middle;
+border-top: 1px solid var(--border-light);
+border-bottom: none;
+padding: 14px 10px;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+background-color: rgba(0, 0, 0, 0.01);
+}
+
+.table-hover tbody tr:hover {
+background-color: rgba(0, 0, 0, 0.02);
+}
+
+/* =========================================================
+Forms & Inputs
+========================================================= */
+
+.form-control,
+.select2-container .select2-selection--single,
+.select2-container .select2-selection--multiple {
+border: 1px solid var(--border-soft);
+border-radius: var(--radius-sm);
+min-height: 42px;
+background-color: #ffffff;
+color: var(--text-main);
+box-shadow: inset 0 1px 2px rgba(0,0,0,0.01);
+transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus {
+border-color: var(--brand-primary);
+background-color: #ffffff;
+/* Soft focus ring ala Apple */
+box-shadow: 0 0 0 4px rgba(43, 118, 171, 0.15);
+}
+
+label {
+color: var(--text-main);
+font-weight: 500;
+font-size: 13px;
+margin-bottom: 6px;
+}
+
+/* =========================================================
+Badges (Soft Colors)
+========================================================= */
+
+.badge {
+border-radius: var(--radius-sm);
+font-weight: 600;
+padding: 4px 8px;
+font-size: 11px;
+letter-spacing: 0.2px;
+}
+
+/* Mengubah solid badge menjadi soft badge (Text berwarna + BG transparan) */
+.badge-primary { background-color: rgba(43, 118, 171, 0.1); color: var(--brand-primary); }
+.badge-success { background-color: rgba(38, 117, 56, 0.1); color: var(--brand-secondary); }
+.badge-warning { background-color: rgba(245, 158, 11, 0.1); color: var(--brand-warning); }
+
+/* =========================================================
+Mobile Responsive Tweaks
+========================================================= */
+
+@media (max-width: 1024px) {
+.main-content {
+padding-top: 90px;
+}
+}
+
+@media (max-width: 575.98px) {
+.section .section-header h1 {
+font-size: 22px;
+}
+.card .card-body {
+padding: 16px;
+}
+.card.card-statistic-1 .card-icon {
+width: 40px;
+height: 40px;
+margin: 16px 0 16px 16px;
+}
+.card.card-statistic-1 .card-icon i {
+font-size: 18px;
+}
+.card.card-statistic-1 .card-wrap {
+margin-left: 70px;
+padding: 16px 16px 16px 0;
+}
+.card.card-statistic-1 .card-body {
+font-size: 22px;
+}
+}
