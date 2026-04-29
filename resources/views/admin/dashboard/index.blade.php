@@ -205,27 +205,67 @@
             <div class="col-lg-4 col-md-12 col-12">
                 <div class="card rounded-xl border-none shadow-[0_4px_15px_rgba(0,0,0,0.03)]">
                     <div class="card-header">
-                        <h4 class="text-[#267538] font-bold">Top Penulis (Bulan Ini)</h4>
-                    </div>
+    <h4 class="text-[#267538] font-bold">
+        <i class="fas fa-pen-nib mr-2"></i>
+        Top Penulis (Bulan Ini)
+    </h4>
+</div>
                     <div class="card-body">
-                        <ul class="list-unstyled list-unstyled-border">
-                            <li class="media flex items-center mb-4">
-                                <img class="mr-3 rounded-full shadow-md object-cover" width="50" height="50" src="{{ asset('frontend/assets/images/default-avatar.png') }}" alt="avatar">
-                                <div class="media-body w-full">
-                                    <div class="float-right text-[#2b76ab] font-bold text-sm">42 Berita</div>
-                                    <div class="font-bold text-gray-800">Aziz Rahmansyah</div>
-                                    <span class="text-xs text-gray-500">Administrator</span>
-                                </div>
-                            </li>
-                            <li class="media flex items-center">
-                                <img class="mr-3 rounded-full shadow-md object-cover" width="50" height="50" src="{{ asset('frontend/assets/images/default-avatar.png') }}" alt="avatar">
-                                <div class="media-body w-full">
-                                    <div class="float-right text-[#2b76ab] font-bold text-sm">28 Berita</div>
-                                    <div class="font-bold text-gray-800">Afyu</div>
-                                    <span class="text-xs text-gray-500">Editor</span>
-                                </div>
-                            </li>
-                        </ul>
+<ul class="list-unstyled list-unstyled-border">
+    <li class="media flex items-center mb-4">
+        <img 
+            class="mr-3 rounded-full shadow-md object-cover" 
+            width="50" 
+            height="50" 
+            src="https://ui-avatars.com/api/?name=User&background=e5e7eb&color=374151&size=128&bold=true" 
+            alt="User Avatar"
+        >
+
+        <div class="media-body w-full">
+            <div class="float-right text-[#64748b] font-bold text-sm">
+                <i class="fas fa-newspaper mr-1"></i>
+                42 Berita
+            </div>
+
+            <div class="font-bold text-gray-800">
+                <i class="fas fa-crown mr-1 text-[#b7a16a]"></i>
+                Aziz Rahmansyah
+            </div>
+
+            <span class="text-xs text-gray-500">
+                <i class="fas fa-user-shield mr-1"></i>
+                Administrator
+            </span>
+        </div>
+    </li>
+
+    <li class="media flex items-center">
+        <img 
+            class="mr-3 rounded-full shadow-md object-cover" 
+            width="50" 
+            height="50" 
+            src="https://ui-avatars.com/api/?name=User&background=e5e7eb&color=374151&size=128&bold=true" 
+            alt="User Avatar"
+        >
+
+        <div class="media-body w-full">
+            <div class="float-right text-[#64748b] font-bold text-sm">
+                <i class="fas fa-newspaper mr-1"></i>
+                28 Berita
+            </div>
+
+            <div class="font-bold text-gray-800">
+                <i class="fas fa-medal mr-1 text-[#94a3b8]"></i>
+                Afyu
+            </div>
+
+            <span class="text-xs text-gray-500">
+                <i class="fas fa-user-edit mr-1"></i>
+                Editor
+            </span>
+        </div>
+    </li>
+</ul>
                     </div>
                 </div>
             </div>
@@ -234,64 +274,133 @@
 @endsection
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
 $(document).ready(function() {
-    // 1. Grafik Tren Berita (Warna Biru Sungai)
-    var ctxTrend = document.getElementById("newsTrendChart").getContext('2d');
-    var newsTrendChart = new Chart(ctxTrend, {
-        type: 'line',
-        data: {
-            labels: ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"], 
-            datasets: [{
-                label: 'Berita Dipublikasikan',
-                data: [12, 19, 14, 25, 22, 10, 5],
-                borderWidth: 3,
-                backgroundColor: 'rgba(43, 118, 171, 0.1)', // Biru transparan
-                borderColor: '#2b76ab', // Biru solid
-                pointBackgroundColor: '#ffffff',
-                pointBorderColor: '#2b76ab',
-                pointRadius: 5,
-                pointHoverRadius: 7, 
-                lineTension: 0.4 
-            }]
-        },
-        options: {
-            legend: { display: false },
-            scales: {
-                yAxes: [{ gridLines: { display: false, drawBorder: false } }],
-                xAxes: [{ gridLines: { color: '#fbfbfb', lineWidth: 2 } }]
-            },
-            tooltips: {
-                backgroundColor: '#2b76ab',
-                titleFontColor: '#fff',
-                bodyFontColor: '#fff',
-                displayColors: false
-            }
-        }
-    });
+    const trendCanvas = document.getElementById('newsTrendChart');
+    const categoryCanvas = document.getElementById('categoryChart');
 
-    // 2. Grafik Kategori (Warna Brand Logo)
-    var ctxCat = document.getElementById("categoryChart").getContext('2d');
-    var categoryChart = new Chart(ctxCat, {
-        type: 'doughnut',
-        data: {
-            labels: ["Pemerintahan", "Ekonomi", "Kriminal", "Olahraga"],
-            datasets: [{
-                data: [45, 25, 20, 10],
-                backgroundColor: ['#2b76ab', '#267538', '#c5a33c', '#4a4a4a'],
-                borderWidth: 2,
-                borderColor: '#ffffff',
-                hoverBorderColor: '#ffffff'
-            }]
-        },
-        options: {
-            responsive: true,
-            legend: { position: 'bottom' },
-            cutoutPercentage: 75,
-            animation: { animateScale: true, animateRotate: true }
-        }
-    });
+    if (trendCanvas) {
+        const trendCtx = trendCanvas.getContext('2d');
+
+        const trendGradient = trendCtx.createLinearGradient(0, 0, 0, 260);
+        trendGradient.addColorStop(0, 'rgba(100, 116, 139, 0.18)');
+        trendGradient.addColorStop(1, 'rgba(100, 116, 139, 0.02)');
+
+        new Chart(trendCtx, {
+            type: 'line',
+            data: {
+                labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+                datasets: [{
+                    label: 'Berita Dipublikasikan',
+                    data: [12, 19, 14, 25, 22, 10, 5],
+                    fill: true,
+                    backgroundColor: trendGradient,
+                    borderColor: '#64748b',
+                    borderWidth: 2.5,
+                    tension: 0.42,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#64748b',
+                    pointBorderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#1f2937',
+                        titleColor: '#ffffff',
+                        bodyColor: '#ffffff',
+                        padding: 12,
+                        cornerRadius: 10,
+                        displayColors: false
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#94a3b8'
+                        },
+                        border: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: '#f1f5f9'
+                        },
+                        ticks: {
+                            color: '#94a3b8',
+                            precision: 0
+                        },
+                        border: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    if (categoryCanvas) {
+        const categoryCtx = categoryCanvas.getContext('2d');
+
+        new Chart(categoryCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Pemerintahan', 'Ekonomi', 'Kriminal', 'Olahraga'],
+                datasets: [{
+                    data: [45, 25, 20, 10],
+                    backgroundColor: ['#64748b', '#94a3b8', '#cbd5e1', '#e5e7eb'],
+                    borderColor: '#ffffff',
+                    borderWidth: 4,
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                cutout: '72%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#64748b',
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                            padding: 18,
+                            boxWidth: 8,
+                            boxHeight: 8,
+                            font: {
+                                size: 12,
+                                weight: '500'
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#1f2937',
+                        titleColor: '#ffffff',
+                        bodyColor: '#ffffff',
+                        padding: 12,
+                        cornerRadius: 10
+                    }
+                }
+            }
+        });
+    }
 });
 </script>
 @endpush
