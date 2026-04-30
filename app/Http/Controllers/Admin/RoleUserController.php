@@ -110,6 +110,13 @@ class RoleUserController extends Controller implements HasMiddleware
         }
 
         $user = Admin::findOrFail($id);
+        
+        // Prevent changing Super Admin role to something else
+        if ($user->getRoleNames()->first() === 'Super Admin' && $request->role !== 'Super Admin') {
+            toast(__('admin.You cannot change the role of a Super Admin'), 'error');
+            return redirect()->back();
+        }
+
         $user->name = $request->name;
         $user->email = $request->email;
 

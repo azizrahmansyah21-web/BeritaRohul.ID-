@@ -10,6 +10,8 @@ class News extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
 
     /** scope for active items */
     public function tags()

@@ -10,7 +10,7 @@
             <div class="card-header">
                 <h4>{{ __('admin.Roles and Permission') }}</h4>
                 <div class="card-header-action">
-                    <a href="{{ route('admin.role.create') }}" class="btn btn-primary">
+                    <a href="{{ route('admin.role.create') }}" class="btn btn-primary shadow-sm">
                         <i class="fas fa-plus"></i> {{ __('admin.Create new') }}
                     </a>
                 </div>
@@ -47,11 +47,11 @@
                                 <td>
                                     @if ($role->name != 'Super Admin')
                                     <a href="{{ route('admin.role.edit', $role->id) }}"
-                                        class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                                        class="btn btn-warning text-white shadow-sm"><i class="fas fa-edit"></i> Edit</a>
 
                                     <a href="{{ route('admin.role.destory', $role->id) }}"
-                                        class="btn btn-danger delete-item"><i
-                                            class="fas fa-trash-alt"></i></a>
+                                        class="btn btn-danger shadow-sm delete-item"><i
+                                            class="fas fa-trash-alt"></i> Delete</a>
                                     @endif
                                 </td>
                             </tr>

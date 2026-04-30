@@ -65,7 +65,7 @@
 
 
 
-                    <button type="submit" class="btn btn-primary">{{ __('admin.Update') }}</button>
+                    <button type="submit" class="btn btn-primary shadow-sm">{{ __('admin.Update') }}</button>
                 </form>
             </div>
         </div>

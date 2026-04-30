@@ -41,6 +41,30 @@
         gtag('config', 'UA-94034622-3');
     </script>
     <!-- /END GA -->
+    <!-- Fix Button Colors Conflict (e.g. from Tailwind Preflight) -->
+    <style>
+        /* Force button backgrounds to show up properly */
+        button.btn, a.btn {
+            border-width: 1px !important;
+        }
+        .btn-primary { background-color: #6777ef !important; border-color: #6777ef !important; color: #fff !important; }
+        .btn-primary:hover { background-color: #394eea !important; }
+        
+        .btn-danger { background-color: #fc544b !important; border-color: #fc544b !important; color: #fff !important; }
+        .btn-danger:hover { background-color: #fb160a !important; }
+        
+        .btn-warning { background-color: #ffa426 !important; border-color: #ffa426 !important; color: #fff !important; }
+        .btn-warning:hover { background-color: #ff8c00 !important; }
+        
+        .btn-success { background-color: #47c363 !important; border-color: #47c363 !important; color: #fff !important; }
+        .btn-success:hover { background-color: #28a745 !important; }
+
+        .btn-info { background-color: #3abaf4 !important; border-color: #3abaf4 !important; color: #fff !important; }
+        .btn-info:hover { background-color: #0da8ee !important; }
+
+        .btn-secondary { background-color: #cdd3d8 !important; border-color: #cdd3d8 !important; color: #191d21 !important; }
+        .btn-dark { background-color: #191d21 !important; border-color: #191d21 !important; color: #fff !important; }
+    </style>
 </head>
 
 @php

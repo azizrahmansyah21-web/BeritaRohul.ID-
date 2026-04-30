@@ -45,7 +45,7 @@ class RolePermisionController extends Controller implements HasMiddleware
 
 
         $request->validate([
-            'role' => ['required', 'max:50', 'unique:permissions,name']
+            'role' => ['required', 'max:50', 'unique:roles,name']
         ]);
 
         /** create the role */
@@ -70,12 +70,18 @@ class RolePermisionController extends Controller implements HasMiddleware
     }
 
     function update(Request $request, string $id) : RedirectResponse {
+        $role = Role::findOrFail($id);
+
+        if ($role->name === 'Super Admin' && $request->role !== 'Super Admin') {
+            toast(__('admin.You cannot change the name of the Super Admin role'), 'error');
+            return redirect()->back();
+        }
+
         $request->validate([
-            'role' => ['required', 'max:50', 'unique:permissions,name']
+            'role' => ['required', 'max:50', 'unique:roles,name,' . $id]
         ]);
 
-        /** create the role */
-        $role = Role::findOrFail($id);
+        /** update the role */
         $role->update(['guard_name' => 'admin', 'name' => $request->role]);
 
         /** assgin permissions to the role */

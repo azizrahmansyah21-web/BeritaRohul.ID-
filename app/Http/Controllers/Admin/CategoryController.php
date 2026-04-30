@@ -104,10 +104,9 @@ class CategoryController extends Controller implements HasMiddleware
 
         try {
             $category = Category::findOrFail($id);
-//            $news = News::where('category_id', $category->id)->get();
-//            foreach($news as $item){
-//                $item->tags()->delete();
-//            }
+            if ($category->news()->count() > 0) {
+                return response(['status' => 'error', 'message' => __('admin.Cannot delete, this category has news attached!')]);
+            }
             $category->delete();
             return response(['status' => 'success', 'message' => __('admin.Deleted Successfully!')]);
         } catch (\Throwable $th) {
