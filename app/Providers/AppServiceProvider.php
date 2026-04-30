@@ -27,13 +27,18 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrap();
 
-        // Ambil pengaturan dari database jika tabel ada
-        if (Schema::hasTable('settings')) {
-            $setting = Setting::pluck('value', 'key')->toArray();
+        // Selalu share $settings default ke semua views (mencegah crash jika DB kosong)
+        View::share('settings', []);
 
-            View::composer('*', function ($view) use ($setting) {
-                $view->with('settings', $setting);
-            });
+        // Timpa dengan data dari database jika tabel ada
+        try {
+            if (Schema::hasTable('settings')) {
+                $setting = Setting::pluck('value', 'key')->toArray();
+
+                View::share('settings', $setting);
+            }
+        } catch (\Exception $e) {
+            // Database belum tersedia (misalnya saat testing bootstrap)
         }
 
         // Gate untuk Super Admin

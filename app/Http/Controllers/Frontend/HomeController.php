@@ -111,6 +111,10 @@ class HomeController extends Controller
             ->activeEntries()->withLocalize()
             ->first();
 
+        if (!$news) {
+            abort(404);
+        }
+
         $this->countView($news);
 
         $recentNews = News::with(['category', 'auther'])->where('slug','!=', $news->slug)
