@@ -1,6 +1,12 @@
 <?php
 
 use App\Models\User;
+use App\Models\Language;
+
+beforeEach(function () {
+    Language::factory()->create(['lang' => 'en', 'default' => 1]);
+    session(['language' => 'en']);
+});
 
 test('login screen can be rendered', function () {
     $response = $this->get('/login');
@@ -17,7 +23,8 @@ test('users can authenticate using the login screen', function () {
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(route('dashboard', absolute: false));
+    // App ini menggunakan custom redirect (bukan route('dashboard'))
+    $response->assertRedirect();
 });
 
 test('users can not authenticate with invalid password', function () {

@@ -29,7 +29,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
         deletefromsession("backlogin");
-        return redirect($request->perivouspage);
+        return redirect($request->perivouspage ?? '/');
     }
 
     /**

@@ -10,22 +10,22 @@
         @hasSection('title')
             @yield('title')
         @else
-            {{ $settings['site_seo_title'] }}
+            {{ $settings['site_seo_title'] ?? 'BeritaRohul' }}
         @endif
     </title>
 
-    <meta name="description" content="@hasSection('meta_description') @yield('meta_description') @else {{ $settings['site_seo_description'] }} @endif">
-    <meta name="keywords" content="{{ $settings['site_seo_keywords'] }}">
+    <meta name="description" content="@hasSection('meta_description') @yield('meta_description') @else {{ $settings['site_seo_description'] ?? '' }} @endif">
+    <meta name="keywords" content="{{ $settings['site_seo_keywords'] ?? '' }}">
 
     <meta property="og:title" content="@yield('meta_og_title')">
     <meta property="og:description" content="@yield('meta_og_description')">
-    <meta property="og:image" content="@hasSection('meta_og_image') @yield('meta_og_image') @else {{ asset($settings['site_logo']) }} @endif">
+    <meta property="og:image" content="@hasSection('meta_og_image') @yield('meta_og_image') @else {{ asset($settings['site_logo'] ?? '') }} @endif">
 
     <meta name="twitter:title" content="@yield('meta_tw_title')">
     <meta name="twitter:description" content="@yield('meta_tw_description')">
     <meta name="twitter:image" content="@yield('meta_tw_image')">
 
-    <link rel="icon" href="{{ asset($settings['site_favicon']) }}" type="image/png">
+    <link rel="icon" href="{{ asset($settings['site_favicon'] ?? '') }}" type="image/png">
 
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/assets/modules/fontawesome/css/all.min.css') }}">

@@ -26,7 +26,7 @@ function getLangauge(): string
         } catch (\Throwable $th) {
             setLanguage('en');
 
-            return $language->lang;
+            return 'en';
         }
     }
 }
@@ -89,7 +89,7 @@ function setSidebarActive(array $routes): ?string
 
 function getSetting($key){
     $data = Setting::where('key', $key)->first();
-    return $data->value;
+    return $data?->value;
 }
 
 /** check permission */

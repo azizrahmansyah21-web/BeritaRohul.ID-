@@ -1,8 +1,14 @@
 <?php
 
 use App\Models\User;
+use App\Models\Language;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Notification;
+
+beforeEach(function () {
+    Language::factory()->create(['lang' => 'en', 'default' => 1]);
+    session(['language' => 'en']);
+});
 
 test('reset password link screen can be rendered', function () {
     $response = $this->get('/forgot-password');
